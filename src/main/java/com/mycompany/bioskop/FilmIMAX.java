@@ -26,7 +26,7 @@ public class FilmIMAX extends Film {
 
     public double getUkuranLayar() {
         return ukuranLayar;
-    }
+    }//
 
     public void setUkuranLayar(double ukuranLayar) {
         if (ukuranLayar <= 0) {
