@@ -253,7 +253,7 @@ public class Bioskop {
 
     private static double hitungTotal(Film film, int jumlah) {
         return film.hitungHargaTiket() * jumlah;
-    }
+    } //dsf
 
 
     private static double hitungTotal(Film film, int jumlah, double diskonPersen) {
