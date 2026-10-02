@@ -3,12 +3,12 @@ package com.mycompany.bioskop;
 import java.util.Scanner;
 
 /**
- * Class utama: menu CLI Sistem Manajemen Bioskop (Modul 6: Polymorphism).
+ * 
  */
 public class Bioskop {
     private static final Scanner scanner = new Scanner(System.in);
 
-    // Array bertipe SUPERCLASS: bisa menampung Film2D, Film3D, FilmIMAX, dan Film4DX (upcasting)
+  
     private static final Film[] daftarFilm = new Film[10];
     private static int jumlahFilm = 0;
 
@@ -116,7 +116,7 @@ public class Bioskop {
         }
     }
 
-    // ===== Menu 2: Tampilkan Semua (Runtime Polymorphism) =====
+
     private static void tampilkanSemuaFilm() {
         System.out.println("\n--- Daftar Film Smart Cinema ---");
         if (jumlahFilm == 0) {
@@ -126,7 +126,7 @@ public class Bioskop {
         cetakHeader();
         for (int i = 0; i < jumlahFilm; i++) {
             System.out.printf("%-3d", i + 1);
-            // Dynamic binding: Java memilih tampilkanInfo() milik subclass asli saat runtime
+
             daftarFilm[i].tampilkanInfo();
         }
         System.out.println("Total film dibuat (counter static): " + Film.getTotalFilmDibuat());
@@ -138,7 +138,7 @@ public class Bioskop {
         System.out.println("-".repeat(128));
     }
 
-    // ===== Menu 3: Cari Film (Compile-Time Polymorphism: overloading cariFilm) =====
+
     private static void menuCariFilm() {
         System.out.println("\n--- Cari Film ---");
         System.out.println("1. Berdasarkan judul");
@@ -245,24 +245,23 @@ public class Bioskop {
         prosesPemesanan(daftarFilm[nomor - 1], jumlahTiket, diskon);
     }
 
-    // ===== Compile-Time Polymorphism: overloading hitungTotal =====
-    // Overload 1: harga satu tiket
+    
     private static double hitungTotal(Film film) {
         return film.hitungHargaTiket();
     }
 
-    // Overload 2: banyak tiket tanpa diskon
+
     private static double hitungTotal(Film film, int jumlah) {
         return film.hitungHargaTiket() * jumlah;
     }
 
-    // Overload 3: banyak tiket dengan diskon persen
+
     private static double hitungTotal(Film film, int jumlah, double diskonPersen) {
         double subtotal = hitungTotal(film, jumlah);
         return subtotal - (subtotal * diskonPersen / 100);
     }
 
-    // ===== Runtime Polymorphism: method menerima parameter bertipe SUPERCLASS =====
+
     private static void prosesPemesanan(Film film, int jumlah, double diskonPersen) {
         double total = (diskonPersen > 0)
                 ? hitungTotal(film, jumlah, diskonPersen)
@@ -279,7 +278,7 @@ public class Bioskop {
         System.out.printf("Total bayar  : Rp%,.0f%n", total);
     }
 
-    // ===== Menu 5: Simulasi Pemutaran Film (Dynamic Binding) =====
+  
     private static void menuSimulasi() {
         if (jumlahFilm == 0) {
             System.out.println("Belum ada film yang bisa disimulasikan.");
