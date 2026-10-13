@@ -271,6 +271,9 @@ public class Bioskop {
         System.out.printf("Film         : %s (%s, %s)%n", film.getJudul(), film.getStudio(), film.getJamTayang());
         System.out.printf("Tipe         : %s%n", film.getClass().getSimpleName());
         System.out.printf("Harga tiket  : Rp%,.0f%n", hitungTotal(film)); // harga dihitung method override
+        if (film instanceof Fasilitas) {
+            System.out.println("Fasilitas    : " + ((Fasilitas) film).getDeskripsiFasilitas());
+        }
         System.out.printf("Jumlah       : %d%n", jumlah);
         if (diskonPersen > 0) {
             System.out.printf("Diskon       : %.0f%%%n", diskonPersen);
@@ -313,6 +316,12 @@ public class Bioskop {
     private static void jalankanSimulasi(Film film) {
         System.out.println("\n>> Referensi bertipe Film, objek aslinya: " + film.getClass().getSimpleName());
         film.simulasiTayang();
+
+        // Cek apakah film ini mengimplementasikan interface Fasilitas
+        if (film instanceof Fasilitas) {
+            Fasilitas f = (Fasilitas) film;
+            System.out.println("   Fasilitas: " + f.getDeskripsiFasilitas());
+        }
     }
 
     // ===== Helper input =====
