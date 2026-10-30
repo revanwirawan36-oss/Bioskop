@@ -1,23 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-
-/**
- *
- * @author A S U S
- */
 package com.mycompany.bioskop;
 
-/**
- * Subclass: film format 3D (ada biaya kacamata).
- */
-public class Film3D extends Film {
+
+public class Film3D extends Film implements Fasilitas {
     private double biayaKacamata;
 
     public Film3D(String judul, String genre, int durasiMenit, double hargaDasar,
-                  String studio, String jamTayang, double biayaKacamata) {
+                  String studio, String jamTayang, double biayaKacamata) throws Exception {
         super(judul, genre, durasiMenit, hargaDasar, studio, jamTayang);
         setBiayaKacamata(biayaKacamata);
     }
@@ -26,11 +14,21 @@ public class Film3D extends Film {
         return biayaKacamata;
     }
 
-    public void setBiayaKacamata(double biayaKacamata) {
+    public void setBiayaKacamata(double biayaKacamata) throws Exception {
         if (biayaKacamata < 0) {
-            throw new IllegalArgumentException("Biaya kacamata tidak boleh negatif.");
+            throw new Exception("Biaya kacamata tidak boleh negatif.");
         }
         this.biayaKacamata = biayaKacamata;
+    }
+
+    @Override
+    public String getTipe() {
+        return "3D";
+    }
+
+    @Override
+    public String getDeskripsiFasilitas() {
+        return "Kacamata 3D (biaya Rp" + String.format("%,.0f", biayaKacamata) + ")";
     }
 
     @Override
@@ -41,6 +39,12 @@ public class Film3D extends Film {
     @Override
     public void tampilkanInfo() {
         super.tampilkanInfo();
-        System.out.printf(" | %-4s | Kacamata 3D: Rp%,.0f%n", "3D", biayaKacamata);
+        System.out.printf(" | %-4s | Kacamata 3D: Rp%,.0f%n", getTipe(), biayaKacamata);
+    }
+
+    @Override
+    public void simulasiTayang() {
+        super.simulasiTayang();
+        System.out.println("   [3D] Kacamata 3D dibagikan ke penonton, proyektor dual-lens menyala.");
     }
 }

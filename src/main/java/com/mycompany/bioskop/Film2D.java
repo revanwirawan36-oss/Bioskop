@@ -1,14 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.bioskop;
-
-/**
- *
- * @author A S U S
- */
-
 
 /**
  * Subclass: film format reguler 2D.
@@ -17,7 +7,7 @@ public class Film2D extends Film {
     private String bahasaSubtitle;
 
     public Film2D(String judul, String genre, int durasiMenit, double hargaDasar,
-                  String studio, String jamTayang, String bahasaSubtitle) {
+                  String studio, String jamTayang, String bahasaSubtitle) throws Exception {
         super(judul, genre, durasiMenit, hargaDasar, studio, jamTayang);
         setBahasaSubtitle(bahasaSubtitle);
     }
@@ -26,11 +16,16 @@ public class Film2D extends Film {
         return bahasaSubtitle;
     }
 
-    public void setBahasaSubtitle(String bahasaSubtitle) {
+    public void setBahasaSubtitle(String bahasaSubtitle) throws Exception {
         if (bahasaSubtitle == null || bahasaSubtitle.trim().isEmpty()) {
-            throw new IllegalArgumentException("Bahasa subtitle tidak boleh kosong.");
+            throw new Exception("Bahasa subtitle tidak boleh kosong.");
         }
         this.bahasaSubtitle = bahasaSubtitle.trim();
+    }
+
+    @Override
+    public String getTipe() {
+        return "2D";
     }
 
     @Override
@@ -41,6 +36,12 @@ public class Film2D extends Film {
     @Override
     public void tampilkanInfo() {
         super.tampilkanInfo();
-        System.out.printf(" | %-4s | Subtitle: %s%n", "2D", bahasaSubtitle);
+        System.out.printf(" | %-4s | Subtitle: %s%n", getTipe(), bahasaSubtitle);
+    }
+
+    @Override
+    public void simulasiTayang() {
+        super.simulasiTayang();
+        System.out.println("   [2D] Proyektor standar menyala, subtitle " + bahasaSubtitle + " ditampilkan.");
     }
 }

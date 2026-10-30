@@ -1,19 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.bioskop;
 
-/**
- *
- * @author A S U S
- */
 
-
-/**
- * Superclass: representasi sebuah film di bioskop.
- */
-public class Film {
+public abstract class Film {
     private String judul;
     private String genre;
     private int durasiMenit;
@@ -21,22 +9,22 @@ public class Film {
     private String studio;
     private String jamTayang;
 
-    // Static: pencatat total objek film yang berhasil dibuat
+
     private static int totalFilmDibuat = 0;
 
     public Film(String judul, String genre, int durasiMenit, double hargaDasar,
-                String studio, String jamTayang) {
-        // Memakai setter agar validasi ikut berjalan saat objek dibuat
+                String studio, String jamTayang) throws Exception {
+
         setJudul(judul);
         setGenre(genre);
         setDurasiMenit(durasiMenit);
         setHargaDasar(hargaDasar);
         setStudio(studio);
         setJamTayang(jamTayang);
-        totalFilmDibuat++; // hanya naik jika semua validasi lolos
+        totalFilmDibuat++; 
     }
 
-    // ===== Getter =====
+
     public String getJudul() {
         return judul;
     }
@@ -66,58 +54,64 @@ public class Film {
     }
 
     // ===== Setter dengan validasi =====
-    public void setJudul(String judul) {
+    public void setJudul(String judul) throws Exception {
         if (judul == null || judul.trim().isEmpty()) {
-            throw new IllegalArgumentException("Judul film tidak boleh kosong.");
+            throw new Exception("Judul film tidak boleh kosong.");
         }
         this.judul = judul.trim();
     }
 
-    public void setGenre(String genre) {
+    public void setGenre(String genre) throws Exception {
         if (genre == null || genre.trim().isEmpty()) {
-            throw new IllegalArgumentException("Genre tidak boleh kosong.");
+            throw new Exception("Genre tidak boleh kosong.");
         }
         this.genre = genre.trim();
     }
 
-    public void setDurasiMenit(int durasiMenit) {
+    public void setDurasiMenit(int durasiMenit) throws Exception {
         if (durasiMenit <= 0 || durasiMenit > 300) {
-            throw new IllegalArgumentException("Durasi harus 1-300 menit.");
+            throw new Exception("Durasi harus 1-300 menit.");
         }
         this.durasiMenit = durasiMenit;
     }
 
-    public void setHargaDasar(double hargaDasar) {
+    public void setHargaDasar(double hargaDasar) throws Exception {
         if (hargaDasar <= 0) {
-            throw new IllegalArgumentException("Harga dasar harus lebih dari 0.");
+            throw new Exception("Harga dasar harus lebih dari 0.");
         }
         this.hargaDasar = hargaDasar;
     }
 
-    public void setStudio(String studio) {
+    public void setStudio(String studio) throws Exception {
         if (studio == null || studio.trim().isEmpty()) {
-            throw new IllegalArgumentException("Studio tidak boleh kosong.");
+            throw new Exception("Studio tidak boleh kosong.");
         }
         this.studio = studio.trim();
     }
 
-    public void setJamTayang(String jamTayang) {
-        // Format HH:mm, contoh 19:30
+    public void setJamTayang(String jamTayang) throws Exception {
+
         if (jamTayang == null || !jamTayang.trim().matches("([01]\\d|2[0-3]):[0-5]\\d")) {
-            throw new IllegalArgumentException("Jam tayang harus berformat HH:mm (contoh 19:30).");
+            throw new Exception("Jam tayang harus berformat HH:mm (contoh 19:30).");
         }
         this.jamTayang = jamTayang.trim();
     }
 
-    // ===== Method yang akan di-override subclass =====
+   
+    public abstract String getTipe();
+
     public double hitungHargaTiket() {
         return hargaDasar;
     }
 
-    // Mencetak bagian umum satu baris tabel (tanpa newline),
-    // subclass melanjutkan dengan tipe dan info khususnya.
+
     public void tampilkanInfo() {
-        System.out.printf("%-22s | %-10s | %3d mnt | %-9s | %-5s | Rp%,10.0f",
+        System.out.printf("%-22s | %-12s | %3d mnt | %-10s | %-5s | Rp%,10.0f",
                 judul, genre, durasiMenit, studio, jamTayang, hitungHargaTiket());
+    }
+
+    public void simulasiTayang() {
+        System.out.printf("Memutar \"%s\" di %s pukul %s (%d menit).%n",
+                judul, studio, jamTayang, durasiMenit);
     }
 }
