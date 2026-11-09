@@ -53,7 +53,7 @@ public abstract class Film {
         return totalFilmDibuat;
     }
 
-    // ===== Setter dengan validasi =====
+    //setter dengan validasi
     public void setJudul(String judul) throws Exception {
         if (judul == null || judul.trim().isEmpty()) {
             throw new Exception("Judul film tidak boleh kosong.");
