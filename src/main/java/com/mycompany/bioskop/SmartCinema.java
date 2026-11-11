@@ -1,7 +1,15 @@
 package com.mycompany.bioskop;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class SmartCinema {
     private String namaBioskop;
@@ -138,6 +146,72 @@ public class SmartCinema {
         System.out.println("Total Pelanggan Terdaftar: " + dataPelanggan.size());
         for (Pelanggan p : dataPelanggan.values()) {
             System.out.println("- ID: " + p.getId() + " | Nama: " + p.getNama());
+        }
+    }
+
+    // ===== file i/o teks =====
+    public void bacaLogTransaksi() {
+        System.out.println("\n--- Riwayat Log Transaksi ---");
+        try {
+            File fileLog = new File("log_transaksi.txt");
+            if (!fileLog.exists()) {
+                System.out.println("Belum ada log transaksi.");
+                return;
+            }
+            Scanner mesinBaca = new Scanner(fileLog);
+            while (mesinBaca.hasNextLine()) {
+                System.out.println(mesinBaca.nextLine());
+            }
+            mesinBaca.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Gagal membuka file log.");
+        }
+    }
+
+    // ===== serialization =====
+    public void simpanDataKeFile() {
+        try {
+            FileOutputStream fileKeluar = new FileOutputStream("data_bioskop.dat");
+            ObjectOutputStream mesinPembeku = new ObjectOutputStream(fileKeluar);
+
+            mesinPembeku.writeObject(daftarFilm);
+            mesinPembeku.writeObject(dataPelanggan);
+
+            mesinPembeku.close();
+            System.out.println("-> [SYSTEM LOG] Data berhasil disimpan (Serialization) ke data_bioskop.dat. "
+                    + "Film: " + daftarFilm.size() + ", Pelanggan: " + dataPelanggan.size());
+        } catch (IOException e) {
+            System.out.println("-> [SYSTEM ERROR] Gagal menyimpan data: " + e.getMessage());
+        }
+    }
+
+    // ===== deserialization =====
+    @SuppressWarnings("unchecked")
+    public void muatDataDariFile() {
+        File cekFile = new File("data_bioskop.dat");
+        if (!cekFile.exists()) {
+            System.out.println("-> [SYSTEM LOG] Belum ada file data_bioskop.dat, mulai dari data kosong.");
+            return;
+        }
+        try {
+            FileInputStream fileMasuk = new FileInputStream(cekFile);
+            ObjectInputStream mesinPembangkit = new ObjectInputStream(fileMasuk);
+
+            ArrayList<Film> filmMuat = (ArrayList<Film>) mesinPembangkit.readObject();
+            HashMap<String, Pelanggan> pelangganMuat = (HashMap<String, Pelanggan>) mesinPembangkit.readObject();
+
+            mesinPembangkit.close();
+
+            this.daftarFilm = filmMuat;
+            this.dataPelanggan = pelangganMuat;
+
+            // variabel static tidak ikut diserialize
+            Film.setTotalFilmDibuat(daftarFilm.size());
+
+            System.out.println("-> [SYSTEM LOG] Data berhasil dimuat (Deserialization) dari data_bioskop.dat. "
+                    + "Film: " + daftarFilm.size() + ", Pelanggan: " + dataPelanggan.size());
+        } catch (Exception e) {
+            System.out.println("-> [SYSTEM ERROR] Gagal memuat data: " + e.getMessage());
         }
     }
 

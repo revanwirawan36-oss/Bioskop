@@ -1,14 +1,16 @@
 package com.mycompany.bioskop;
 
+import java.io.Serializable;
 
-public abstract class Film {
+public abstract class Film implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String judul;
     private String genre;
     private int durasiMenit;
     private double hargaDasar;
     private String studio;
     private String jamTayang;
-
 
     private static int totalFilmDibuat = 0;
 
@@ -21,9 +23,8 @@ public abstract class Film {
         setHargaDasar(hargaDasar);
         setStudio(studio);
         setJamTayang(jamTayang);
-        totalFilmDibuat++; 
+        totalFilmDibuat++;
     }
-
 
     public String getJudul() {
         return judul;
@@ -51,6 +52,10 @@ public abstract class Film {
 
     public static int getTotalFilmDibuat() {
         return totalFilmDibuat;
+    }
+
+    public static void setTotalFilmDibuat(int total) {
+        totalFilmDibuat = total;
     }
 
     //setter dengan validasi
@@ -90,20 +95,17 @@ public abstract class Film {
     }
 
     public void setJamTayang(String jamTayang) throws Exception {
-
         if (jamTayang == null || !jamTayang.trim().matches("([01]\\d|2[0-3]):[0-5]\\d")) {
             throw new Exception("Jam tayang harus berformat HH:mm (contoh 19:30).");
         }
         this.jamTayang = jamTayang.trim();
     }
 
-   
     public abstract String getTipe();
 
     public double hitungHargaTiket() {
         return hargaDasar;
     }
-
 
     public void tampilkanInfo() {
         System.out.printf("%-22s | %-12s | %3d mnt | %-10s | %-5s | Rp%,10.0f",

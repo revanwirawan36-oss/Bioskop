@@ -19,7 +19,12 @@ public class Bioskop {
 
         cinema = new SmartCinema("Smart Cinema");
         cinema.bukaBioskop();
-        isiDataAwal();
+
+        // deserialization otomatis saat program mulai
+        cinema.muatDataDariFile();
+        if (cinema.getJumlahFilm() == 0) {
+            isiDataAwal();
+        }
 
         while (isRunning) {
             System.out.println("\n=== MENU UTAMA ===");
@@ -30,10 +35,13 @@ public class Bioskop {
             System.out.println("5. Simulasi Pemutaran Film");
             System.out.println("6. Manajemen Pelanggan");
             System.out.println("7. Info Gedung (Demo Composition)");
-            System.out.println("8. Keluar");
+            System.out.println("8. Baca Log Transaksi (Demo File I/O Teks)");
+            System.out.println("9. Simpan Data (Demo Serialization)");
+            System.out.println("10. Muat Data (Demo Deserialization)");
+            System.out.println("11. Simpan & Keluar");
 
             try {
-                int pilihan = bacaInt("Pilih Menu (1-8): ");
+                int pilihan = bacaInt("Pilih Menu (1-11): ");
 
                 switch (pilihan) {
                     case 1 -> menuTambahFilm();
@@ -46,11 +54,16 @@ public class Bioskop {
                     case 5 -> menuSimulasi();
                     case 6 -> menuPelanggan();
                     case 7 -> cinema.infoGedung();
-                    case 8 -> {
+                    case 8 -> cinema.bacaLogTransaksi();
+                    case 9 -> cinema.simpanDataKeFile();
+                    case 10 -> cinema.muatDataDariFile();
+                    case 11 -> {
+                        System.out.println("Menyimpan sesi sebelum keluar...");
+                        cinema.simpanDataKeFile();
                         System.out.println("Terima kasih telah menggunakan Smart Cinema!");
                         isRunning = false;
                     }
-                    default -> System.out.println("Pilihan tidak valid. Masukkan angka 1-8.");
+                    default -> System.out.println("Pilihan tidak valid. Masukkan angka 1-11.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("\n[FATAL ERROR] Input tidak valid! Anda harus memasukkan angka.");

@@ -1,5 +1,10 @@
 package com.mycompany.bioskop;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class TransaksiPembelian {
 
     public static void prosesBeli(Pelanggan pelanggan, Film film, int jumlah, double diskonPersen) {
@@ -22,6 +27,23 @@ public class TransaksiPembelian {
         System.out.printf("Total bayar  : Rp%,.0f%n", total);
         System.out.println("Status       : Berhasil dicatat di sistem.");
         System.out.println("===========================");
+
+        catatLog(pelanggan, film, jumlah, total);
+    }
+
+    // file i/o write: mode append (true) supaya log lama tidak terhapus
+    private static void catatLog(Pelanggan pelanggan, Film film, int jumlah, double total) {
+        String waktu = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        try (FileWriter pipaTulis = new FileWriter("log_transaksi.txt", true)) {
+            String log = "[" + waktu + "] Pembeli: " + pelanggan.getNama() + " (" + pelanggan.getId() + ")"
+                    + " | Film: " + film.getJudul()
+                    + " | Jumlah: " + jumlah
+                    + " | Total: Rp" + String.format("%,.0f", total) + "\n";
+            pipaTulis.write(log);
+            System.out.println("-> [SYSTEM LOG] Transaksi dicatat ke log_transaksi.txt");
+        } catch (IOException e) {
+            System.out.println("Peringatan: Gagal menulis log transaksi ke file. " + e.getMessage());
+        }
     }
 
     private static double hitungTotal(Film film) {
